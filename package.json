@@ -1,0 +1,28 @@
+{
+  "name": "downloadmusicforprogramming",
+  "version": "1.0.0",
+  "description": "Download music for programming in https://musicforprogramming.net/ ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "glorywong1001@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "jsdom": "^16.5.3",
+    "lodash": "^4.17.21",
+    "ora": "^5.4.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GloryWong/downloadMusicForProgramming.git"
+  },
+  "bugs": {
+    "url": "https://github.com/GloryWong/downloadMusicForProgramming/issues"
+  },
+  "homepage": "https://github.com/GloryWong/downloadMusicForProgramming#readme"
+}
