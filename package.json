@@ -26,10 +26,10 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/GloryWong/downloadMusicForProgramming.git"
+    "url": "git+https://github.com/GloryWong/downmp.git"
   },
   "bugs": {
-    "url": "https://github.com/GloryWong/downloadMusicForProgramming/issues"
+    "url": "https://github.com/GloryWong/downmp/issues"
   },
-  "homepage": "https://github.com/GloryWong/downloadMusicForProgramming#readme"
+  "homepage": "https://github.com/GloryWong/downmp#readme"
 }
