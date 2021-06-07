@@ -5,7 +5,7 @@
 ## Install
 
 ```sh
-npm -g i @gs/downmp
+npm -g i @glorywong/downmp
 ```
 
 ## Usage
