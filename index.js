@@ -1,33 +1,30 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { appendFile, writeFile, mkdir } from 'fs/promises';
+import { appendFile, writeFile } from 'fs/promises';
+import mkdirp from 'mkdirp';
 import path from 'path';
 import Ora from 'ora';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
 import { JSDOM } from 'jsdom';
-import config from './config.js';
+import defaultConfig from './defaultConfig.js';
+import ConfigStore from 'configstore';
+import { pad, parseProxy } from './util.js';
+import launch from 'launch-editor';
 
-// signal for stop downloading
-let stopSignal = false;
-
-function pad(num, length = 2) {
-  const numStr = num.toString();
-  return numStr.length < length ? '0' + numStr : numStr;
-}
-
-// read from configuration
-const { timeout, musicTitleExceptions, proxy } = config;
-const axiosIns = proxy && proxy.protocal && proxy.host && proxy.port ? axios.create({
-    proxy
-  }) : axios.create();
-
+// Global variables
+let stopSignal = false; // signal for stop downloading
+let logInfoPath = '';
+let musicTitleExceptions = [];
+let rootPath = '';
+const axiosIns = axios.create();
 
 // create log file
-let logInfoPath;
 await (async function() {
   try {
-    const logDirPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'log');
+    rootPath = path.join(process.env.HOME, '.downmp');
+    const logDirPath = path.join(rootPath, 'logs');
+    await mkdirp(logDirPath);
+
     const date = new Date();
     logInfoPath = path.join(logDirPath, `info.${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}.log`);
     await writeFile(logInfoPath, '=============== Download Musics For Programming =================\n\n');
@@ -38,16 +35,11 @@ await (async function() {
 })();
 
 // create location directory
-async function createLocationDir() {
-  const dir = 'musicForProgramming';
-  const location = path.join(process.env.HOME, dir);
+async function createLocationDir(location) {
   try {
-    await mkdir(location, {
-      recursive: true
-    });
+    await mkdirp(location);
     console.log(`Musics will be saved in ${location}`);
-    appendFile(logInfoPath, `Created directory '${location}' for musics\n\n`);
-    return location;
+    appendFile(logInfoPath, `\n\nCreated directory '${location}' for musics\n\n`);
   } catch (error) {
     console.error('create', location, 'failed:', error);
     process.exit(1);
@@ -87,8 +79,10 @@ async function downloadMusic(musicList, location) {
     await Promise.all(queue);
     console.log('All musics downloaded');
     appendFile(logInfoPath, 'All music files downloaded\n');
+    process.exit(0);
   } catch (error) {
     console.error('Parts of musics downloaded:', error);
+    process.exit(1);
   }
 
   async function download(title) {
@@ -128,18 +122,47 @@ async function downloadMusic(musicList, location) {
   }
 }
 
-// Run
-// set timeout for process
-let musicList = [];
-const tm = 1000 * 60 * timeout;
-setTimeout(async () => {
-  stopSignal = true;
-  console.log(`\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded. Check the ${logInfoPath}`);
-  await appendFile(logInfoPath, `\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded:\n`);
-  await appendFile(logInfoPath, `${musicList.join('\n')}`);
-}, tm);
-musicList = await fetchMusicList();
-const location = await createLocationDir();
-await downloadMusic(musicList, location);
+function editFile(configPath, editor) {
+  launch(configPath, typeof editor === 'string' ? editor : undefined, (fileName, error) => {
+    console.error('failed to open file', fileName, ':', error);
+  });
+}
 
-process.exit(0);
+// Run
+async function run({ proxy: instantProxy, timeout: instantTimeout, edit, location: instantLocation }) {
+  try {
+    // read from configuration
+    const configPath = path.join(rootPath, 'config.json');
+    let configStore = new ConfigStore('', fs.existsSync(configPath) ? null : defaultConfig, { configPath });
+    if (edit) {
+      editFile(configPath, edit);
+      return;
+    }
+
+    const { timeout: defaultTimeout, musicTitleExceptions: defaultMusicTitleExceptions, proxy: defaultProxy, location: defaultLocation} = configStore.all;
+    const proxy = instantProxy || defaultProxy;
+    if (proxy && proxy.protocol && proxy.host) {
+      axiosIns.defaults.proxy = parseProxy(proxy);
+    }
+    const timeout = instantTimeout || defaultTimeout;
+    musicTitleExceptions = defaultMusicTitleExceptions;
+    const location = path.resolve(instantLocation || defaultLocation || path.join(process.env.HOME, 'musicforprogramming'));
+
+    // set timeout for process
+    let musicList = [];
+    setTimeout(async () => {
+      stopSignal = true;
+      console.log(`\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded. Check the ${logInfoPath}`);
+      await appendFile(logInfoPath, `\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded:\n`);
+      await appendFile(logInfoPath, `${musicList.join('\n')}`);
+    }, 1000 * 60 * timeout);
+    musicList = await fetchMusicList();
+    await createLocationDir(location);
+    await downloadMusic(musicList, location);
+  } catch (error) {
+    console.error('run failed:', error);
+    process.exit(1);
+  }
+}
+
+export default run;

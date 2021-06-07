@@ -1,9 +1,12 @@
 {
-  "name": "downloadmusicforprogramming",
+  "name": "@glorywong/downmp",
   "version": "1.0.0",
-  "description": "Download music for programming in https://musicforprogramming.net/ ",
+  "description": "Download musics for programming in https://musicforprogramming.net/ ",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "downmp": "cli.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,8 +15,12 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.1",
+    "commander": "^7.2.0",
+    "configstore": "^6.0.0",
     "jsdom": "^16.5.3",
+    "launch-editor": "^2.2.1",
     "lodash": "^4.17.21",
+    "mkdirp": "^1.0.4",
     "ora": "^5.4.0"
   },
   "devDependencies": {},

@@ -7,9 +7,5 @@ export default {
     "Mücha": "mücha",
     "Misc.": "misc.works"
   },
-  "proxy": {
-    "protocol": "http",
-    "host": "localhost",
-    "port": "51837"
-  }
-};
+  "proxy": ""
+}
