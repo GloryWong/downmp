@@ -1,6 +1,6 @@
 {
   "name": "@glorywong/downmp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Download musics for programming in https://musicforprogramming.net/ ",
   "main": "index.js",
   "type": "module",
