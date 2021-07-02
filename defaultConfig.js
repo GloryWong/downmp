@@ -7,5 +7,6 @@ export default {
     "Mücha": "mücha",
     "Misc.": "misc.works"
   },
-  "proxy": ""
+  "proxy": "",
+  "concurencyNum": 3
 }

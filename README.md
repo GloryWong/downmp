@@ -1,14 +1,14 @@
-# `@glorywong/downmp`
+# `@gloxy/downmp-cli`
 
 > Download music for programming in https://musicforprogramming.net/ 
 
-## Install
+# Install
 
 ```sh
-npm -g i @glorywong/downmp
+npm -g i @gloxy/downmp-cli
 ```
 
-## Usage
+# Usage
 
 ```sh
 downmp --help

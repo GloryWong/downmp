@@ -10,6 +10,7 @@ import defaultConfig from './defaultConfig.js';
 import ConfigStore from 'configstore';
 import { pad, parseProxy } from './util.js';
 import launch from 'launch-editor';
+import unilog from '@gloxy/unilog';
 
 // Global variables
 let stopSignal = false; // signal for stop downloading
@@ -29,7 +30,7 @@ await (async function() {
     logInfoPath = path.join(logDirPath, `info.${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}.log`);
     await writeFile(logInfoPath, '=============== Download Musics For Programming =================\n\n');
   } catch (error) {
-    console.error('create log file failed: ', error);
+    unilog.fail('create log file failed: ', error);
     process.exit(1);
   }
 })();
@@ -38,10 +39,10 @@ await (async function() {
 async function createLocationDir(location) {
   try {
     await mkdirp(location);
-    console.log(`Musics will be saved in ${location}`);
+    unilog.info(`Musics will be saved in ${location}`);
     appendFile(logInfoPath, `\n\nCreated directory '${location}' for musics\n\n`);
   } catch (error) {
-    console.error('create', location, 'failed:', error);
+    unilog.fail('create', location, 'failed:', error);
     process.exit(1);
   }
 }
@@ -67,8 +68,7 @@ async function fetchMusicList() {
 }
 
 // download music files
-async function downloadMusic(musicList, location) {
-  const concurencyNum = 3;
+async function downloadMusic(musicList, location, concurencyNum) {
   const queue = Array(concurencyNum);
   
   for (let i = 0; i < queue.length; i++) {
@@ -77,11 +77,11 @@ async function downloadMusic(musicList, location) {
 
   try {
     await Promise.all(queue);
-    console.log('All musics downloaded');
+    unilog.info('All musics downloaded');
     appendFile(logInfoPath, 'All music files downloaded\n');
     process.exit(0);
   } catch (error) {
-    console.error('Parts of musics downloaded:', error);
+    unilog.fail('Parts of musics downloaded:', error);
     process.exit(1);
   }
 
@@ -124,12 +124,12 @@ async function downloadMusic(musicList, location) {
 
 function editFile(configPath, editor) {
   launch(configPath, typeof editor === 'string' ? editor : undefined, (fileName, error) => {
-    console.error('failed to open file', fileName, ':', error);
+    unilog.fail('failed to open file', fileName, ':', error);
   });
 }
 
 // Run
-async function run({ proxy: instantProxy, timeout: instantTimeout, edit, location: instantLocation }) {
+async function run({ proxy: instantProxy, timeout: instantTimeout, edit, location: instantLocation, concurencyNum: instantConcurencyNum }) {
   try {
     // read from configuration
     const configPath = path.join(rootPath, 'config.json');
@@ -139,7 +139,7 @@ async function run({ proxy: instantProxy, timeout: instantTimeout, edit, locatio
       return;
     }
 
-    const { timeout: defaultTimeout, musicTitleExceptions: defaultMusicTitleExceptions, proxy: defaultProxy, location: defaultLocation} = configStore.all;
+    const { timeout: defaultTimeout, musicTitleExceptions: defaultMusicTitleExceptions, proxy: defaultProxy, location: defaultLocation, concurrency: defaultConcurrencyNum } = configStore.all;
     const proxy = instantProxy || defaultProxy;
     if (proxy && proxy.protocol && proxy.host) {
       axiosIns.defaults.proxy = parseProxy(proxy);
@@ -147,20 +147,21 @@ async function run({ proxy: instantProxy, timeout: instantTimeout, edit, locatio
     const timeout = instantTimeout || defaultTimeout;
     musicTitleExceptions = defaultMusicTitleExceptions;
     const location = path.resolve(instantLocation || defaultLocation || path.join(process.env.HOME, 'musicforprogramming'));
+    const concurencyNum = instantConcurencyNum || defaultConcurrencyNum;
 
     // set timeout for process
     let musicList = [];
     setTimeout(async () => {
       stopSignal = true;
-      console.log(`\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded. Check the ${logInfoPath}`);
+      unilog.info(`\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded. Check the ${logInfoPath}`);
       await appendFile(logInfoPath, `\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded:\n`);
       await appendFile(logInfoPath, `${musicList.join('\n')}`);
     }, 1000 * 60 * timeout);
     musicList = await fetchMusicList();
     await createLocationDir(location);
-    await downloadMusic(musicList, location);
+    await downloadMusic(musicList, location, concurencyNum);
   } catch (error) {
-    console.error('run failed:', error);
+    unilog.fail('run failed:', error);
     process.exit(1);
   }
 }
