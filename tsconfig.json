@@ -1,0 +1,4 @@
+{
+  "extends": "@tsconfig/node20/tsconfig.json",
+  "files": ["index.ts", "cli.ts", "defaultConfig.ts"]
+}

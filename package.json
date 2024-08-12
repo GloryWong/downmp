@@ -1,42 +1,77 @@
 {
   "name": "@gloxy/downmp-cli",
+  "type": "module",
   "version": "0.1.1",
   "description": "Download musics for programming in https://musicforprogramming.net/ ",
-  "main": "index.js",
-  "type": "module",
-  "bin": {
-    "gdownmp": "cli.js"
+  "author": {
+    "name": "GloryWong",
+    "email": "glorywong1001@gmail.com",
+    "url": "https://glorywong.com"
   },
-  "scripts": {
-    "test": "exit 0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
+  "license": "MIT",
+  "homepage": "https://github.com/GloryWong/downmp#readme",
+  "repository": "github:GloryWong/downmp",
+  "bugs": "https://github.com/GloryWong/downmp/issues",
   "keywords": [
     "download",
     "music",
     "programming"
   ],
-  "author": "glorywong1001@gmail.com",
-  "license": "ISC",
+  "bin": {
+    "downmp": "cli.js"
+  },
+  "files": [
+    "cli.js",
+    "defaultConfig.js",
+    "index.js"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "build",
+    "prepare": "pnpm simple-git-hooks",
+    "lint": "eslint .",
+    "lint:fix": "pnpm lint --fix"
+  },
   "dependencies": {
-    "@gloxy/unilog": "^1.0.0",
-    "axios": "^0.21.1",
-    "commander": "^7.2.0",
-    "configstore": "^6.0.0",
-    "jsdom": "^16.5.3",
-    "launch-editor": "^2.2.1",
+    "@gloxy/logger": "^2.2.2",
+    "axios": "^1.7.3",
+    "commander": "^12.1.0",
+    "configstore": "^7.0.0",
+    "iso-timestamp": "^1.1.0",
+    "jsdom": "^24.1.1",
+    "launch-editor": "^2.8.1",
     "lodash": "^4.17.21",
-    "mkdirp": "^1.0.4",
-    "ora": "^5.4.0"
+    "lodash.snakecase": "^4.1.1",
+    "mkdirp": "^3.0.1",
+    "ora": "^8.0.1",
+    "read-pkg": "^9.0.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GloryWong/downmp.git"
+  "devDependencies": {
+    "@antfu/eslint-config": "^2.25.1",
+    "@commitlint/cli": "^19.4.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/configstore": "^6.0.2",
+    "@types/jsdom": "^21.1.7",
+    "@types/lodash.snakecase": "^4.1.9",
+    "@types/node": "^22.2.0",
+    "@vitest/coverage-istanbul": "^2.0.5",
+    "eslint": "^9.9.0",
+    "lint-staged": "^15.2.8",
+    "simple-git-hooks": "^2.11.1",
+    "type-fest": "^4.24.0",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
   },
-  "bugs": {
-    "url": "https://github.com/GloryWong/downmp/issues"
+  "simple-git-hooks": {
+    "commit-msg": "pnpm commitlint --edit ${1}",
+    "pre-commit": "pnpm lint-staged"
   },
-  "homepage": "https://github.com/GloryWong/downmp#readme"
+  "lint-staged": {
+    "*": "pnpm lint:fix"
+  }
 }
