@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepublishOnly": "build",
+    "prepublishOnly": "pnpm build",
     "prepare": "pnpm simple-git-hooks",
     "lint": "eslint .",
     "lint:fix": "pnpm lint --fix"
@@ -43,8 +43,6 @@
     "configstore": "^7.0.0",
     "iso-timestamp": "^1.1.0",
     "jsdom": "^24.1.1",
-    "launch-editor": "^2.8.1",
-    "lodash": "^4.17.21",
     "lodash.snakecase": "^4.1.1",
     "mkdirp": "^3.0.1",
     "ora": "^8.0.1",
