@@ -9,7 +9,7 @@ const version = (await readPackage({ cwd: import.meta.dirname })).version
 
 new Command()
   .version(version)
-  .option('-t, --timeout <timeout>', 'set timeout of running (unit: minute). Default: 0.5')
+  .option('-t, --timeout <timeout>', 'set timeout of running (unit: minute). Default: 1')
   .option('-l, --location <location>', `set location in which musics will be saved. Default: ${`${cwd()}/musicforprogramming`}`)
   .showHelpAfterError()
   .action((options) => {

@@ -11,18 +11,16 @@ import { JSDOM } from 'jsdom'
 import ConfigStore from 'configstore'
 import { createLogger, enableLogger } from '@gloxy/logger'
 import timestamp from 'iso-timestamp'
-import snakeCase from 'lodash.snakecase'
 import defaultConfig from './defaultConfig.js'
 
 // Global variables
-let stopSignal = false // signal for stop downloading
 let logInfoPath = ''
 let musicTitleExceptions: any[] = []
 let rootPath = ''
 const axiosIns = axios.create()
 
 const logger = createLogger('downmp')
-enableLogger('downmp')
+enableLogger('downmp:*')
 
 // create log file
 await (async function () {
@@ -31,9 +29,8 @@ await (async function () {
     const logDirPath = path.join(rootPath, 'logs')
     await mkdirp(logDirPath)
 
-    const date = new Date()
     logInfoPath = path.join(logDirPath, `info.${timestamp()}.log`)
-    await writeFile(logInfoPath, '=============== Download Musics For Programming =================\n\n')
+    await writeFile(logInfoPath, '=============== Download Music For Programming =================\n\n')
   }
   catch (error) {
     logger.error('create log file failed: %o', error)
@@ -45,8 +42,8 @@ await (async function () {
 async function createLocationDir(location: string) {
   try {
     await mkdirp(location)
-    logger.info(`Musics will be saved in ${location}`)
-    appendFile(logInfoPath, `\n\nCreated directory '${location}' for musics\n\n`)
+    logger.info(`Music will be saved in ${location}`)
+    appendFile(logInfoPath, `\n\nCreated directory '${location}' for music\n\n`)
   }
   catch (error) {
     logger.error('create', location, 'failed:', error)
@@ -58,19 +55,21 @@ async function createLocationDir(location: string) {
 async function fetchMusicList() {
   const ora = Ora().start('Fetch the music list')
   try {
-    const pageUrl = 'https://musicforprogramming.net/'
-    ora.text = 'Fetch page'
+    const pageUrl = 'https://musicforprogramming.net/latest'
+    ora.text = 'Searching for the music list...'
     const rsp = await axiosIns.get(pageUrl)
     const dom = new JSDOM(rsp.data)
-    const musicList = Array.from(dom.window.document.querySelector('#episodes')?.querySelectorAll('a') ?? [], achor => achor.textContent).filter(v => !!v) as string[]
-    ora.succeed()
+
+    const musicList = Array.from(dom.window.document.querySelector('#sapper')?.querySelectorAll('a') ?? [], achor => achor.textContent).filter(v => v && /^\d{2}:.+/.test(v)) as string[]
+
+    ora.succeed(`Found ${musicList.length} music`)
     appendFile(logInfoPath, `Fetched the music list from ${pageUrl}\n`)
     appendFile(logInfoPath, `Music List (${musicList.length}):\n${musicList.join('\n')}`)
     appendFile(logInfoPath, '\n\n')
     return musicList
   }
   catch (error) {
-    ora.fail(`Fetch the music list:${error}`)
+    ora.fail(`Failed to fetch the music list:${error}`)
     process.exit(1)
   }
 }
@@ -79,6 +78,7 @@ async function fetchMusicList() {
 async function downloadMusic(musicList: string[], location: string, concurencyNum: number) {
   const queue = Array(concurencyNum)
 
+  const number = musicList.length
   if (musicList.length) {
     for (let i = 0; i < queue.length; i++) {
       queue[i] = download(musicList.pop()!)
@@ -87,12 +87,12 @@ async function downloadMusic(musicList: string[], location: string, concurencyNu
 
   try {
     await Promise.all(queue)
-    logger.info('All musics downloaded')
-    appendFile(logInfoPath, 'All music files downloaded\n')
+    logger.info('All %d music were downloaded', number)
+    appendFile(logInfoPath, 'All music files were downloaded\n')
     process.exit(0)
   }
   catch (error) {
-    logger.error('Parts of musics downloaded:', error)
+    logger.error('Parts of music were downloaded:', error)
     process.exit(1)
   }
 
@@ -101,29 +101,24 @@ async function downloadMusic(musicList: string[], location: string, concurencyNu
     const filePath = `music_for_programming_${title.replace(/^(\d+):(.+)$/, (match, p1, p2) => {
       p2 = p2.trim()
       // console.log('>>>', p2);
-      return `${Number(p1)}-${musicTitleExceptions[p2] ? musicTitleExceptions[p2] : snakeCase(p2.replace('+', 'and'))}`
+      return `${Number(p1)}-${musicTitleExceptions[p2] ? musicTitleExceptions[p2] : p2.replace('+', 'and').replace(/\s/g, '_').toLowerCase()}`
     })}.mp3`
     const url = host + filePath
 
     const ora = Ora().start()
     try {
-      ora.text = `downloading '${filePath}'`
+      ora.text = `Downloading ${filePath}`
       const rsp = await axiosIns.get(url, {
         responseType: 'stream',
       })
-      ora.text = `writing '${filePath}' to drive`
+      ora.text = `Writing ${filePath} to drive`
       await rsp.data.pipe(createWriteStream(path.join(location, filePath)))
-      ora.succeed(`'${filePath}' downloaded`)
+      ora.succeed(`Downloaded ${filePath}`)
       appendFile(logInfoPath, `'${filePath}' downloaded\n`)
     }
     catch (error) {
-      ora.fail(`${filePath} failed: ${error}`)
+      ora.fail(`${filePath} failed: ${error}. Retry automatically later`)
       musicList.unshift(title)
-    }
-
-    if (stopSignal) {
-      musicList.unshift(title)
-      return Promise.reject(new Error('stopSignal'))
     }
 
     if (!musicList.length) {
@@ -135,26 +130,18 @@ async function downloadMusic(musicList: string[], location: string, concurencyNu
 }
 
 // Run
-async function run({ timeout: instantTimeout, location: instantLocation, concurencyNum: instantConcurencyNum }: { timeout: number, location: string, concurencyNum: number }) {
+async function run({ location: instantLocation, concurencyNum: instantConcurencyNum }: { timeout: number, location: string, concurencyNum: number }) {
   try {
     // read from configuration
     const configPath = path.join(rootPath, 'config.json')
     const configStore = new ConfigStore('', existsSync(configPath) ? null : defaultConfig, { configPath })
 
-    const { timeout: defaultTimeout, musicTitleExceptions: defaultMusicTitleExceptions, proxy: defaultProxy, location: defaultLocation, concurrency: defaultConcurrencyNum } = configStore.all
-    const timeout = instantTimeout || defaultTimeout
+    const { musicTitleExceptions: defaultMusicTitleExceptions, location: defaultLocation, concurrency: defaultConcurrencyNum } = configStore.all
     musicTitleExceptions = defaultMusicTitleExceptions
     const location = path.resolve(instantLocation || defaultLocation || path.join(cwd(), 'musicforprogramming'))
     const concurencyNum = instantConcurencyNum || defaultConcurrencyNum
 
-    // set timeout for process
     let musicList: string[] = []
-    setTimeout(async () => {
-      stopSignal = true
-      logger.info(`\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded. Check the ${logInfoPath}`)
-      await appendFile(logInfoPath, `\n\nTimeout(${timeout} minute(s)), ${musicList.length} musics haven't downloaded:\n`)
-      await appendFile(logInfoPath, `${musicList.join('\n')}`)
-    }, 1000 * 60 * timeout)
     musicList = await fetchMusicList()
     await createLocationDir(location)
     await downloadMusic(musicList, location, concurencyNum)
