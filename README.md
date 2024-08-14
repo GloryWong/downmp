@@ -1,35 +1,50 @@
+![GitHub License](https://img.shields.io/github/license/GloryWong/downmp)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/w/GloryWong/downmp)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/GloryWong/downmp/release.yml)
+![GitHub Release](https://img.shields.io/github/v/release/GloryWong/downmp)
+![GitHub Release Date](https://img.shields.io/github/release-date/GloryWong/downmp)
+![GitHub Issues or Pull Requests](https://img.shields.io/github/issues/GloryWong/downmp)
+![GitHub watchers](https://img.shields.io/github/watchers/GloryWong/downmp)
+![GitHub forks](https://img.shields.io/github/forks/GloryWong/downmp)
+![GitHub Repo stars](https://img.shields.io/github/stars/GloryWong/downmp)
+![NPM Version](https://img.shields.io/npm/v/%40gloxy%2Fdownmp-cli)
+![NPM Type Definitions](https://img.shields.io/npm/types/%40gloxy%2Fdownmp-cli)
+![NPM Downloads](https://img.shields.io/npm/dw/%40gloxy%2Fdownmp-cli)
+![Node Current](https://img.shields.io/node/v/%40gloxy%2Fdownmp-cli)
+
 # `@gloxy/downmp-cli`
 
-> Node CLI: Download music for programming
+Node CLI: Download music for programming
 
 # Install
 
-```sh
+```bash
 npm -g i @gloxy/downmp-cli
 ```
 
 or
 
-```sh
+```bash
 pnpm -g add @gloxy/downmp-cli
 ```
 
 or
 
-```sh
+```bash
 yarn -g add @gloxy/downmp-cli
 ```
 
 # Usage
 
-```sh
+```bash
 downmp --help
 
-Usage: downmp [options]
+Usage: cli [options] [directory]
+
+Arguments:
+  directory      The location where music files will be saved. Default: ./musicforprogramming
 
 Options:
-  -V, --version              output the version number
-  -t, --timeout <timeout>    set timeout of running (unit: minute). Default: 0.5
-  -l, --location <location>  set location in which musics will be saved. Default: cwd()/musicforprogramming
-  -h, --help                 display help for command
+  -V, --version  output the version number
+  -h, --help     display help for command
 ```

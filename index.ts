@@ -117,7 +117,7 @@ async function downloadMusic(musicList: string[], location: string, concurencyNu
       appendFile(logInfoPath, `'${filePath}' downloaded\n`)
     }
     catch (error) {
-      ora.fail(`${filePath} failed: ${error}. Retry automatically later`)
+      ora.fail(`${filePath} failed: ${error}. An attempt to retry is added in the download queue.`)
       musicList.unshift(title)
     }
 
@@ -130,7 +130,7 @@ async function downloadMusic(musicList: string[], location: string, concurencyNu
 }
 
 // Run
-async function run({ location: instantLocation, concurencyNum: instantConcurencyNum }: { timeout: number, location: string, concurencyNum: number }) {
+async function run(instantLocation: string, { concurencyNum: instantConcurencyNum }: { concurencyNum?: number } = {}) {
   try {
     // read from configuration
     const configPath = path.join(rootPath, 'config.json')

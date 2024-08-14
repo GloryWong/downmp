@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 
-import { cwd } from 'node:process'
+import { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Command } from 'commander/esm.mjs'
 import { readPackage } from 'read-pkg'
 import run from './index.js'
 
-const version = (await readPackage({ cwd: import.meta.dirname })).version
+const version = (await readPackage({ cwd: dirname(fileURLToPath(import.meta.url)) })).version
 
 new Command()
   .version(version)
-  .option('-t, --timeout <timeout>', 'set timeout of running (unit: minute). Default: 1')
-  .option('-l, --location <location>', `set location in which musics will be saved. Default: ${`${cwd()}/musicforprogramming`}`)
+  .argument('[directory]', 'Location where music files will be saved. Default: ./musicforprogramming')
+  .option('-c, --concurency', 'Concurrency number of downloading. Default: 3')
   .showHelpAfterError()
-  .action((options) => {
-    run(options)
+  .action((directory) => {
+    run(directory)
   })
   .parse()
