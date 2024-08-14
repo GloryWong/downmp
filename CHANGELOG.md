@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/GloryWong/downmp/compare/v1.0.2...v1.1.0) (2024-08-14)
+
+
+### Features
+
+* cli options and args ([a711a93](https://github.com/GloryWong/downmp/commit/a711a935eb1f4f915bd54a0136c671cbd1266610))
+
 ## [1.0.2](https://github.com/GloryWong/downmp/compare/v1.0.1...v1.0.2) (2024-08-14)
 
 
