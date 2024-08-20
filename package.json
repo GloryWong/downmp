@@ -60,7 +60,7 @@
     "eslint": "^9.9.0",
     "lint-staged": "^15.2.9",
     "simple-git-hooks": "^2.11.1",
-    "type-fest": "^4.24.0",
+    "type-fest": "^4.25.0",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5"
   },
