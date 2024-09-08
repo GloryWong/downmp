@@ -58,7 +58,7 @@ importers:
         specifier: ^21.1.7
         version: 21.1.7
       '@types/node':
-        specifier: ^18.19.48
+        specifier: ^18.19.50
         version: 18.19.50
       '@vitest/coverage-istanbul':
         specifier: ^2.0.5
