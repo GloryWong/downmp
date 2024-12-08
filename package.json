@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@gloxy/logger": "^2.2.3",
-    "axios": "^1.7.8",
+    "axios": "^1.7.9",
     "commander": "^12.1.0",
     "configstore": "^7.0.0",
     "iso-timestamp": "^1.2.0",
@@ -56,13 +56,13 @@
     "@types/configstore": "^6.0.2",
     "@types/jsdom": "^21.1.7",
     "@types/node": "^18.19.67",
-    "@vitest/coverage-istanbul": "^2.1.6",
-    "eslint": "^9.15.0",
+    "@vitest/coverage-istanbul": "^2.1.8",
+    "eslint": "^9.16.0",
     "lint-staged": "^15.2.10",
     "simple-git-hooks": "^2.11.1",
-    "type-fest": "^4.29.0",
+    "type-fest": "^4.30.0",
     "typescript": "^5.7.2",
-    "vitest": "^2.1.6"
+    "vitest": "^2.1.8"
   },
   "simple-git-hooks": {
     "commit-msg": "pnpm commitlint --edit ${1}",
