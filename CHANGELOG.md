@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/GloryWong/downmp/compare/v1.1.0...v1.1.1) (2025-03-02)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#38](https://github.com/GloryWong/downmp/issues/38)) ([74540de](https://github.com/GloryWong/downmp/commit/74540dea25be97c69c5c8993aaa94fa1be2e29fa))
+* **deps:** update all non-major dependencies ([#40](https://github.com/GloryWong/downmp/issues/40)) ([4d81348](https://github.com/GloryWong/downmp/commit/4d81348ef4b9036022eb89502b45b4d3e9b35d58))
+* **deps:** update dependency jsdom to v25 ([d50dc33](https://github.com/GloryWong/downmp/commit/d50dc33163599d39267b81b79e90abf623e3d001))
+
 ## [1.1.0](https://github.com/GloryWong/downmp/compare/v1.0.2...v1.1.0) (2024-08-14)
 
 
