@@ -1,7 +1,7 @@
 {
   "name": "@gloxy/downmp-cli",
   "type": "module",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Download musics for programming in https://musicforprogramming.net/ ",
   "author": {
     "name": "GloryWong",
