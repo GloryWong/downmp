@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.2](https://github.com/GloryWong/downmp/compare/v1.1.1...v1.1.2) (2025-07-16)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#42](https://github.com/GloryWong/downmp/issues/42)) ([c1f0324](https://github.com/GloryWong/downmp/commit/c1f0324753bd6d7f94c23f5ceed8ece51bbe10fa))
+* **deps:** update all non-major dependencies ([#45](https://github.com/GloryWong/downmp/issues/45)) ([b26f0f6](https://github.com/GloryWong/downmp/commit/b26f0f671565a3265665134a60092c9c0cb953a7))
+* **deps:** update all non-major dependencies ([#51](https://github.com/GloryWong/downmp/issues/51)) ([624013a](https://github.com/GloryWong/downmp/commit/624013a95088557ce94190e9f36d057950a38416))
+* **deps:** update all non-major dependencies ([#60](https://github.com/GloryWong/downmp/issues/60)) ([0bdf985](https://github.com/GloryWong/downmp/commit/0bdf985f687d1d10d61ba75728d35b9312f49ddd))
+
 ## [1.1.1](https://github.com/GloryWong/downmp/compare/v1.1.0...v1.1.1) (2025-03-10)
 
 
