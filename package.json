@@ -55,7 +55,7 @@
     "@tsconfig/node18": "^18.2.4",
     "@types/configstore": "^6.0.2",
     "@types/jsdom": "^21.1.7",
-    "@types/node": "^18.19.122",
+    "@types/node": "^18.19.123",
     "@vitest/coverage-istanbul": "^2.1.9",
     "eslint": "^9.33.0",
     "lint-staged": "^15.5.2",
