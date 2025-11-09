@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "@gloxy/logger": "^2.2.6",
-    "axios": "^1.13.1",
+    "axios": "^1.13.2",
     "commander": "^12.1.0",
     "configstore": "^7.1.0",
     "iso-timestamp": "^1.2.0",
@@ -57,7 +57,7 @@
     "@types/jsdom": "^21.1.7",
     "@types/node": "^18.19.130",
     "@vitest/coverage-istanbul": "^2.1.9",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.1",
     "lint-staged": "^15.5.2",
     "simple-git-hooks": "^2.13.1",
     "type-fest": "^4.41.0",
