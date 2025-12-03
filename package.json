@@ -39,7 +39,7 @@
   "dependencies": {
     "@gloxy/logger": "^2.2.6",
     "axios": "^1.13.2",
-    "commander": "^12.1.0",
+    "commander": "^14.0.2",
     "configstore": "^7.1.0",
     "iso-timestamp": "^1.2.0",
     "jsdom": "^25.0.1",
