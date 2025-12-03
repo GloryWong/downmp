@@ -58,7 +58,7 @@
     "@types/node": "^18.19.130",
     "@vitest/coverage-istanbul": "^2.1.9",
     "eslint": "^9.39.1",
-    "lint-staged": "^15.5.2",
+    "lint-staged": "^16.2.7",
     "simple-git-hooks": "^2.13.1",
     "type-fest": "^4.41.0",
     "typescript": "^5.9.3",
