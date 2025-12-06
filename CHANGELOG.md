@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.1.2](https://github.com/GloryWong/downmp/compare/v1.1.1...v1.1.2) (2025-12-06)
+
+
+### Bug Fixes
+
+* **deps:** update all non-major dependencies ([#42](https://github.com/GloryWong/downmp/issues/42)) ([c1f0324](https://github.com/GloryWong/downmp/commit/c1f0324753bd6d7f94c23f5ceed8ece51bbe10fa))
+* **deps:** update all non-major dependencies ([#45](https://github.com/GloryWong/downmp/issues/45)) ([b26f0f6](https://github.com/GloryWong/downmp/commit/b26f0f671565a3265665134a60092c9c0cb953a7))
+* **deps:** update all non-major dependencies ([#51](https://github.com/GloryWong/downmp/issues/51)) ([624013a](https://github.com/GloryWong/downmp/commit/624013a95088557ce94190e9f36d057950a38416))
+* **deps:** update all non-major dependencies ([#60](https://github.com/GloryWong/downmp/issues/60)) ([0bdf985](https://github.com/GloryWong/downmp/commit/0bdf985f687d1d10d61ba75728d35b9312f49ddd))
+* **deps:** update all non-major dependencies ([#65](https://github.com/GloryWong/downmp/issues/65)) ([2d932c9](https://github.com/GloryWong/downmp/commit/2d932c92e04c8785217276d0a7701991e8279ae6))
+* **deps:** update all non-major dependencies ([#76](https://github.com/GloryWong/downmp/issues/76)) ([eca2ac4](https://github.com/GloryWong/downmp/commit/eca2ac445be0ef8c17d8de5d610c51705fa0acac))
+* **deps:** update all non-major dependencies ([#77](https://github.com/GloryWong/downmp/issues/77)) ([1e38c82](https://github.com/GloryWong/downmp/commit/1e38c820367270e63edecebade938ca496042b64))
+* **deps:** update all non-major dependencies ([#79](https://github.com/GloryWong/downmp/issues/79)) ([8b4d049](https://github.com/GloryWong/downmp/commit/8b4d0498d90d00c69b82114e20199b620e43acf4))
+* **deps:** update all non-major dependencies ([#86](https://github.com/GloryWong/downmp/issues/86)) ([17c5976](https://github.com/GloryWong/downmp/commit/17c597624349173b7283d0aba1208cce4cab0012))
+* **deps:** update dependency axios to ^1.13.1 ([#85](https://github.com/GloryWong/downmp/issues/85)) ([21c2f14](https://github.com/GloryWong/downmp/commit/21c2f1491e59e0d97d6f7bc3a43fdc1e1af13610))
+
 ## [1.1.1](https://github.com/GloryWong/downmp/compare/v1.1.0...v1.1.1) (2025-03-10)
 
 
